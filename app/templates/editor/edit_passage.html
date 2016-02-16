@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title or "IntroHQU - edit_passage" }}{% endblock %}
+
+{% block content %}
+<form action="" method="post" name="edit_passage">
+    {{ form.hidden_tag() }}
+
+    {{ form.body(class_="ckeditor") }}
+    {{ form.submit }}
+</form>
+
+<script src="{{ url_for("static", filename="ckeditor/ckeditor.js") }}"></script>
+{% endblock %}
