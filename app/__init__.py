@@ -1,10 +1,12 @@
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
+from flask.ext.moment import Moment
 
 from config import config
 
 
 db = SQLAlchemy()
+moment = Moment()
 
 
 def create_app(config_name):
@@ -12,6 +14,7 @@ def create_app(config_name):
     app.config.from_object(config[config_name])
 
     db.init_app(app)
+    moment.init_app(app)
 
     from app.main import main as main_blueprint
     app.register_blueprint(main_blueprint)
