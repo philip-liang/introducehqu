@@ -1,4 +1,5 @@
-from flask import render_template, redirect, url_for, request
+from flask import render_template, redirect, url_for, request, flash
+from flask.ext.login import current_user, login_required
 
 from app import db
 from app.models import Passage
@@ -7,11 +8,15 @@ from app.editor.forms import EditorForm
 
 
 @editor.route("/edit_passage", methods=["GET", "POST"])
+@login_required
 def edit_passage():
     form = EditorForm()
 
     if form.validate_on_submit():
-        passage = Passage(body_html=form.body.data)
+        passage = Passage(
+            body_html=form.body.data,
+            author=current_user._get_current_object()
+        )
         db.session.add(passage)
         db.session.commit()
         return redirect(url_for("main.show_passage", id=passage.id))
@@ -20,10 +25,16 @@ def edit_passage():
 
 
 @editor.route("/review_passage", methods=["GET", "POST"])
+@login_required
 def review_passage():
     form = EditorForm()
     passage_id = request.args.get("id")
     passage = Passage.query.get(int(passage_id))
+
+    if current_user.id != passage.author.id and \
+            not current_user.is_administrator():
+        flash("You have no permission.")
+        return redirect(url_for("main.show_passage", id=int(passage_id)))
 
     if form.validate_on_submit():
         passage.body_html = form.body.data
@@ -36,9 +47,16 @@ def review_passage():
 
 
 @editor.route("/delete_passage")
+@login_required
 def delete_passage():
     passage_id = request.args.get("id")
     passage = Passage.query.get(int(passage_id))
+
+    if current_user.id != passage.author.id and \
+            not current_user.is_administrator():
+        flash("You have no permission.")
+        return redirect(url_for("main.show_passage", id=int(passage_id)))
+
     if passage is not None:
         db.session.delete(passage)
     return redirect(url_for("main.index"))
