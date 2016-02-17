@@ -3,5 +3,12 @@
 {% block title %}{{ title or "IntroHQU - index" }}{% endblock %}
 
 {% block content %}
-<h1>Hello, this is index.html.</h1>
+<h1>
+Hello,
+{% if current_user.is_authenticated %}
+{{ current_user.username }}
+{% else %}
+Stranger
+{% endif %}!
+</h1>
 {% endblock %}
