@@ -8,5 +8,7 @@
         {{ passage.body_html | safe }}
     {% endif %}
     <p><a href="{{ url_for("editor.edit_passage") }}">Create Passage</a></p>
+    <p><a href="{{ url_for("editor.review_passage", id=passage.id) }}">Edit Passage</a></p>
+    <p><a href="{{ url_for("editor.delete_passage", id=passage.id) }}">Delete Passage</a></p>
 </div>
 {% endblock %}
