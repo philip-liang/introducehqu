@@ -13,6 +13,7 @@ def edit_passage():
     if form.validate_on_submit():
         passage = Passage(body_html=form.body.data)
         db.session.add(passage)
+        db.session.commit()
         return redirect(url_for("main.show_passage", id=passage.id))
 
     return render_template("editor/edit_passage.html", form=form)
