@@ -3,6 +3,7 @@ from flask.ext.login import current_user, login_required
 
 from app import db
 from app.models import Passage
+from app.summary import SummaryText
 from app.editor import editor
 from app.editor.forms import EditorForm
 
@@ -13,7 +14,10 @@ def edit_passage():
     form = EditorForm()
 
     if form.validate_on_submit():
+        summary = SummaryText(form.body.data)
         passage = Passage(
+            title = form.title.data,
+            body = summary.get_summary(),
             body_html=form.body.data,
             author=current_user._get_current_object()
         )
@@ -37,10 +41,14 @@ def review_passage():
         return redirect(url_for("main.show_passage", id=int(passage_id)))
 
     if form.validate_on_submit():
+        summary = SummaryText(form.body.data)
+        passage.title = form.title.data
+        passage.body = summary.get_summary()
         passage.body_html = form.body.data
         db.session.add(passage)
         return redirect(url_for("main.show_passage", id=int(passage_id)))
     elif passage is not None:
+        form.title.data = passage.title
         form.body.data = passage.body_html
 
     return render_template("editor/edit_passage.html", form=form)

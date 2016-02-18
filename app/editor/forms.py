@@ -4,5 +4,6 @@ from wtforms.validators import Required
 
 
 class EditorForm(Form):
+    title = TextAreaField("title", validators=[Required()])
     body = TextAreaField("Hello!", validators=[Required()])
     submit = SubmitField("Submit")

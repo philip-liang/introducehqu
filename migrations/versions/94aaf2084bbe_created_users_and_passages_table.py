@@ -1,13 +1,13 @@
 """created users and passages table
 
-Revision ID: 58c344d1292a
+Revision ID: 94aaf2084bbe
 Revises: None
-Create Date: 2016-02-17 13:12:02.179470
+Create Date: 2016-02-18 14:23:33.667458
 
 """
 
 # revision identifiers, used by Alembic.
-revision = '58c344d1292a'
+revision = '94aaf2084bbe'
 down_revision = None
 
 from alembic import op
@@ -28,6 +28,7 @@ def upgrade():
     op.create_index(op.f('ix_users_username'), 'users', ['username'], unique=True)
     op.create_table('passages',
     sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('title', sa.UnicodeText(), nullable=True),
     sa.Column('body', sa.UnicodeText(), nullable=True),
     sa.Column('body_html', sa.UnicodeText(), nullable=True),
     sa.Column('timestamp', sa.DateTime(), nullable=True),
