@@ -4,19 +4,31 @@
 {% block title %}IntroHQU - Login{% endblock %}
 
 
+{% block style %}
+<link rel="stylesheet" href="{{ url_for("static", filename="custom/signin.css") }}">
+{% endblock %}
+
+
 {% block content %}
-<p>
-    New user?
-    <a href="{{ url_for("auth.register") }}">
-        Click here to register
-    </a>
-</p>
-<h1>Sign In</h1>
-<form action="" method="post" name="login">
-    {{ form.hidden_tag() }}
-    <p>Email: {{ form.email }}</p>
-    <p>Password: {{ form.password }}</p>
-    <p>{{ form.remember_me }}Remember Me</p>
-    <p>{{ form.submit }}</p>
-</form>
+<div class="container">
+    <form class="form-signin" action="" method="post" name="login">
+        <h2 class="form-signin-heading">Sign In</h2>
+        {{ form.hidden_tag() }}
+        <label for="input_email" class="sr-only">Email</label>
+        {{ form.email(class_="form-control", type="email", id="input_email", placeholder="Email address", required="", autofocus="") }}
+        <label for="input_password" class="sr-only">Password</label>
+        {{ form.password(class_="form-control", type="password", id="input_password", placeholder="Password", required="") }}
+        <div class="checkbox">
+            <label>{{ form.remember_me(type="checkbox") }}Remember Me</label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    </form>
+
+    <p class="form-signin">
+        New user?
+        <a href="{{ url_for("auth.register") }}">
+            Click here to register
+        </a>
+    </p>
+</div> <!-- container -->
 {% endblock %}

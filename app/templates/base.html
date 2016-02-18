@@ -3,30 +3,66 @@
 <html>
     <head>
         <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
         <title>{% block title %}{% endblock %}</title>
+        
+        <link rel="stylesheet" href="{{ url_for("static", filename="bootstrap/css/bootstrap.min.css") }}">
+        <link rel="stylesheet" href="{{ url_for("static", filename="custom/main.css") }}">
+        {% block style %}{% endblock %}
     </head>
-
+    
     <body>
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="{{ url_for("main.index") }}">IntroHQU</a>
+                </div>
+                
+                <div>
+                    <ul class="nav navbar-nav navbar-left">
+                        <li><a href="#">分类栏目</a></li>
+                        <li><a href="#">讨论区</a></li>
+                        <li><a href="#">联系我们</a></li>
+                    </ul>
+                </div>
+                    
+                <div class="navbar-right">
+                    {% if current_user.is_authenticated %}
+                    <p class="navbar-text">Hello, {{ current_user.username }}</p>
+                    <a class="btn btn-default navbar-btn" href="{{ url_for("auth.logout") }}">Sign Out</a>
+                    {% else %}
+                    <a class="btn btn-success navbar-btn" href="{{ url_for("auth.login") }}">登录</a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+
+        <!-- Flash warning -->
         {% with messages = get_flashed_messages() %}
         {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
+        {% for message in messages %}
+        <div class="alert alert-danger alert-dismissable">
+            <div class="container">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times</button>
+                {{ message }}
+            </div>
+        </div>
+        {% endfor %}
         {% endif %}
         {% endwith %}
-        <hr>
-
-        {% if current_user.is_authenticated %}
-        <p><a href="{{ url_for("auth.logout") }}">Sign Out</a></p>
-        {% else %}
-        <p><a href="{{ url_for("auth.login") }}">Sign In</a></p>
-        {% endif %}
-
-        {% block content %}{% endblock %}
-
+    
+        <!-- Page Content -->
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
+        
         <script src="{{ url_for("static", filename="jquery-2.2.0.js") }}"></script>
+        <script src="{{ url_for("static", filename="bootstrap/js/bootstrap.min.js") }}"></script>
         {{ moment.include_moment() }}
+
+        {% block script %}{% endblock %}
     </body>
 </html>
