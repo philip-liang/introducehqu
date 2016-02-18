@@ -35,6 +35,26 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return "<User %r>" % self.username
 
+    @staticmethod
+    def generate_fake(count=100):
+        from sqlalchemy.exc import IntegrityError
+        from random import seed
+        import forgery_py
+
+        seed()
+        for i in range(count):
+            u = User(
+                email=forgery_py.internet.email_address(),
+                username=forgery_py.internet.user_name(True),
+                password=forgery_py.lorem_ipsum.word(),
+                admin_permission=False
+            )
+            db.session.add(u)
+            try:
+                db.session.commit()
+            except IntegrityError:
+                db.session.rollback()
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -53,3 +73,21 @@ class Passage(db.Model):
 
     def __repr__(self):
         return "<Passage %r>" % self.id
+
+    @staticmethod
+    def generate_fake(count=100):
+        from random import seed, randint
+        import forgery_py
+
+        seed()
+        user_count = User.query.count()
+        for i in range(count):
+            u = User.query.offset(randint(0, user_count - 1)).first()
+            p = Passage(
+                title=forgery_py.internet.user_name(True),
+                body=forgery_py.lorem_ipsum.sentences(randint(1, 3)),
+                timestamp=forgery_py.date.date(True),
+                author=u
+            )
+            db.session.add(p)
+            db.session.commit()

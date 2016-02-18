@@ -11,6 +11,8 @@ class Config:
     CSRF_ENABLED = True
     SECRET_KEY = "you-will-never-guess"
 
+    INTROHQU_POSTS_PER_PAGE = 10
+
 
 class DevelopmentConfig(Config):
     DEBUG = True
