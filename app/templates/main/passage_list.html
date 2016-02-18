@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title or "IntroHQU - passages" }}{% endblock %}
+
+{% block content %}
+<div class="list-group">
+    {% for passage in passages %}
+    <a class="list-group-item" href="{{ url_for("main.show_passage", id=passage.id) }}">
+        <span class="badge">{{ moment(passage.timestamp).fromNow() }}</span>
+        <h3 class="list-group-item-heading">{{ passage.title }}</h3>
+        <p class="list-group-item-text">{{ passage.body }}</p>
+    </a>
+    {% endfor %}
+</div>
+{% endblock %}

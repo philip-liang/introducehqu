@@ -16,3 +16,9 @@ def show_passage():
     passage = Passage.query.get_or_404(int(passage_id))
 
     return render_template("main/show_passage.html", passage=passage)
+
+
+@main.route("/passage_list")
+def passage_list():
+    passages = Passage.query.order_by(Passage.timestamp.desc()).all()
+    return render_template("main/passage_list.html", passages=passages)

@@ -7,7 +7,7 @@ class SummaryText(bs4.BeautifulSoup):
     summary_text : the summary text of passage
     """
 
-    def __init__(self, data, summary_len=20):
+    def __init__(self, data, summary_len=100):
         bs4.BeautifulSoup.__init__(self, data, "html.parser")
         self.summary_len = summary_len
 
