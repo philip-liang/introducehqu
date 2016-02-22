@@ -1,13 +1,13 @@
 """created users and passages table
 
-Revision ID: 94aaf2084bbe
+Revision ID: 313cb51a592d
 Revises: None
-Create Date: 2016-02-18 14:23:33.667458
+Create Date: 2016-02-22 19:07:12.801759
 
 """
 
 # revision identifiers, used by Alembic.
-revision = '94aaf2084bbe'
+revision = '313cb51a592d'
 down_revision = None
 
 from alembic import op
@@ -22,6 +22,7 @@ def upgrade():
     sa.Column('username', sa.Unicode(length=64), nullable=True),
     sa.Column('password_hash', sa.String(length=128), nullable=True),
     sa.Column('admin_permission', sa.Boolean(), nullable=True),
+    sa.Column('confirmed', sa.Boolean(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_users_email'), 'users', ['email'], unique=True)

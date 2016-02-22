@@ -12,12 +12,20 @@ class Config:
     SECRET_KEY = "you-will-never-guess"
 
     INTROHQU_POSTS_PER_PAGE = 10
+    INTROHQU_MAIL_SUBJECT_PREFIX = "[IntroHQU]"
+    INTROHQU_MAIL_SENDER = "IntroHQU Admin <2737672378@qq.com>"
 
 
 class DevelopmentConfig(Config):
     DEBUG = True
 
     SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "data-dev.sqlite")
+
+    MAIL_SERVER = "smtp.qq.com"
+    MAIL_PORT = 465
+    MAIL_USE_SSL = True
+    MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
+    MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
 
 
 class ProductionConfig(Config):

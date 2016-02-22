@@ -1,7 +1,7 @@
 from flask.ext.script import Manager, Shell
 from flask.ext.migrate import Migrate, MigrateCommand
 
-from app import create_app, db
+from app import create_app, db, mail
 from app.models import Passage, User
 
 
@@ -9,6 +9,7 @@ def make_shell_context():
     context_dict = {
         "app": app,
         "db": db,
+        "mail": mail,
         "Passage": Passage,
         "User": User,
     }
