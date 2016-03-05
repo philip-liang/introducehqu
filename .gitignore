@@ -3,3 +3,6 @@ venv/*
 
 # Python
 *.py[cod]
+
+# My config
+password

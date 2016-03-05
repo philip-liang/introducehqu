@@ -12,6 +12,7 @@ class Config:
     SECRET_KEY = "you-will-never-guess"
 
     INTROHQU_POSTS_PER_PAGE = 10
+    INTROHQU_COMMENTS_PER_PAGE = 5
     INTROHQU_MAIL_SUBJECT_PREFIX = "[IntroHQU]"
     INTROHQU_MAIL_SENDER = "IntroHQU Admin <2737672378@qq.com>"
 

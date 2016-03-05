@@ -19,6 +19,7 @@ class User(UserMixin, db.Model):
     admin_permission = db.Column(db.Boolean, default=False)
     confirmed = db.Column(db.Boolean, default=False)
     passages = db.relationship("Passage", backref="author", lazy="dynamic")
+    comments = db.relationship("Comment", backref="author", lazy="dynamic")
 
     @property
     def password(self, password):
@@ -88,6 +89,7 @@ class Passage(db.Model):
     body_html = db.Column(db.UnicodeText)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    comments = db.relationship("Comment", backref="passage", lazy="dynamic")
 
     def __repr__(self):
         return "<Passage %r>" % self.id
@@ -109,3 +111,14 @@ class Passage(db.Model):
             )
             db.session.add(p)
             db.session.commit()
+
+
+class Comment(db.Model):
+    __tablename__ = "comments"
+
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.UnicodeText)
+    body_html = db.Column(db.UnicodeText)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    author_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    passage_id = db.Column(db.Integer, db.ForeignKey("passages.id"))
