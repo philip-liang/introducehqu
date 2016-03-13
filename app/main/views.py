@@ -3,7 +3,7 @@ from flask.ext.login import current_user
 
 from app import db
 from app.main import main
-from app.models import Passage, Comment
+from app.models import Passage, Comment, PassageType
 from app.main.forms import CommentForm
 
 
@@ -48,6 +48,12 @@ def show_passage():
 @main.route("/passage_list", methods=["GET", "POST"])
 def passage_list():
     page = request.args.get("page", 1, type=int)
-    pagination = Passage.query.order_by(Passage.timestamp.desc()).paginate(page, per_page=current_app.config["INTROHQU_POSTS_PER_PAGE"], error_out=False)
+    passage_type = request.args.get("type", 0, type=int)
+
+    if passage_type == 0:
+        pagination = Passage.query.order_by(Passage.timestamp.desc()).paginate(page, per_page=current_app.config["INTROHQU_POSTS_PER_PAGE"], error_out=False)
+    else:
+        pagination = PassageType.query.filter_by(id=passage_type).first().passages.order_by(Passage.timestamp.desc()).paginate(page, per_page=current_app.config["INTROHQU_POSTS_PER_PAGE"], error_out=False)
+
     passages = pagination.items
     return render_template("main/passage_list.html", passages=passages, pagination=pagination)

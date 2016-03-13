@@ -23,7 +23,17 @@
                 
                 <div>
                     <ul class="nav navbar-nav navbar-left">
-                        <li><a href="{{ url_for("main.passage_list") }}">分类栏目</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                分类栏目
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ url_for("main.passage_list", type=0) }}">全部文章</a></li>
+                                <li><a href="{{ url_for("main.passage_list", type=1) }}">华大历史</a></li>
+                                <li><a href="{{ url_for("main.passage_list", type=2) }}">华大现状</a></li>
+                            </ul>
+                        </li>
                         <li><a href="#">讨论区</a></li>
                         <li><a href="#">联系我们</a></li>
                     </ul>
