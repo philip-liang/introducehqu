@@ -89,6 +89,7 @@ class Passage(db.Model):
     body_html = db.Column(db.UnicodeText)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    passage_type = db.Column(db.Integer, db.ForeignKey("passagetypes.id"))
     comments = db.relationship("Comment", backref="passage", lazy="dynamic")
 
     def __repr__(self):
@@ -122,3 +123,11 @@ class Comment(db.Model):
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     passage_id = db.Column(db.Integer, db.ForeignKey("passages.id"))
+
+
+class PassageType(db.Model):
+    __tablename__ = "passagetypes"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.UnicodeText, index=True, unique=True)
+    passages = db.relationship("Passage", backref="type", lazy="dynamic")

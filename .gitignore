@@ -5,4 +5,4 @@ venv/*
 *.py[cod]
 
 # My config
-password
+config.sh

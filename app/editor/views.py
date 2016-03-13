@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, request, flash
 from flask.ext.login import current_user, login_required
 
 from app import db
-from app.models import Passage
+from app.models import Passage, PassageType
 from app.summary import SummaryText
 from app.editor import editor
 from app.editor.forms import EditorForm
@@ -12,6 +12,7 @@ from app.editor.forms import EditorForm
 @login_required
 def edit_passage():
     form = EditorForm()
+    form.passage_type.choices = [(t.id, t.name) for t in PassageType.query.order_by("name")]
 
     if form.validate_on_submit():
         summary = SummaryText(form.body.data)
@@ -19,6 +20,7 @@ def edit_passage():
             title = form.title.data,
             body = summary.get_summary(),
             body_html=form.body.data,
+            passage_type=form.passage_type.data,
             author=current_user._get_current_object()
         )
         db.session.add(passage)
